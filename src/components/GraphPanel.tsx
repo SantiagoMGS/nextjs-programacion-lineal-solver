@@ -47,31 +47,34 @@ export default function GraphPanel({ solution }: Props) {
       });
 
       if (c.inequalityType === "≤") {
+        // Relleno bajo la recta hasta y = 0 (sin apilar con otras series)
+        const xPoly = [...xL, xL[xL.length - 1], xL[0]];
+        const yPoly = [...yL, 0, 0];
         traces.push({
-          x: xL,
-          y: yL,
-          fill: "tozeroy",
+          x: xPoly,
+          y: yPoly,
+          mode: "lines",
+          fill: "toself",
           name: undefined,
           fillcolor: hexWithAlpha(color, 0.12),
           line: { color: "rgba(0,0,0,0)" },
           showlegend: false,
+          hoverinfo: "skip",
         });
       } else if (c.inequalityType === "≥") {
+        // Relleno sobre la recta hasta y = YMAX (polígono cerrado)
+        const xPoly = [...xL, xL[xL.length - 1], xL[0]];
+        const yPoly = [...yL, YMAX, YMAX];
         traces.push({
-          x: [0, XMAX],
-          y: [YMAX, YMAX],
+          x: xPoly,
+          y: yPoly,
           mode: "lines",
-          line: { color: "rgba(0,0,0,0)" },
-          showlegend: false,
-        });
-        traces.push({
-          x: xL,
-          y: yL,
-          mode: "lines",
-          fill: "tonexty",
+          fill: "toself",
+          name: undefined,
           fillcolor: hexWithAlpha(color, 0.12),
           line: { color: "rgba(0,0,0,0)" },
           showlegend: false,
+          hoverinfo: "skip",
         });
       }
     });
