@@ -83,18 +83,18 @@ export default function InputPanel({
             <option value="minimizar">minimizar</option>
           </select>
         </div>
-        <div className="grid grid-cols-[auto_1fr_auto_1fr_auto] gap-2 items-center">
+        <div className="flex flex-wrap items-center gap-2">
           <span>Z =</span>
           <input
             value={c1}
             onChange={(e) => setC1(e.target.value)}
-            className="border w-20 px-2 py-1"
+            className="border w-20 px-2 py-1 flex-shrink-0"
           />
           <span>*X₁ +</span>
           <input
             value={c2}
             onChange={(e) => setC2(e.target.value)}
-            className="border w-20 px-2 py-1"
+            className="border w-20 px-2 py-1 flex-shrink-0"
           />
           <span>*X₂</span>
         </div>
