@@ -8,22 +8,15 @@ import {
   ObjectiveFunction,
   OptimizationType,
 } from "@/lib/models";
+import { exampleStartup, exampleProduction, exampleMix } from "@/lib/examples";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 type Props = {
   onSolve: (p: LinearProgrammingProblem) => void;
-  onLoadStartup: () => void;
-  onLoadProduction: () => void;
-  onLoadMix: () => void;
 };
 
-export default function InputPanel({
-  onSolve,
-  onLoadStartup,
-  onLoadProduction,
-  onLoadMix,
-}: Props) {
+export default function InputPanel({ onSolve }: Props) {
   const [optimizationType, setOpt] = useState<OptimizationType>("maximizar");
   const [c1, setC1] = useState("250");
   const [c2, setC2] = useState("300");
@@ -68,6 +61,25 @@ export default function InputPanel({
     } catch (e: any) {
       alert(e.message ?? "Error en los datos");
     }
+  };
+
+  const applyProblem = (p: LinearProgrammingProblem) => {
+    setOpt(p.objectiveFunction.optimizationType);
+    setC1(String(p.objectiveFunction.c1));
+    setC2(String(p.objectiveFunction.c2));
+    setConstraints(
+      p.constraints.map((c) => ({
+        a1: String(c.a1),
+        a2: String(c.a2),
+        ineq: c.inequalityType,
+        b: String(c.b),
+      }))
+    );
+    onSolve(p);
+    setTimeout(() => {
+      const el = document.getElementById("section-graph");
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }, 50);
   };
 
   return (
@@ -179,13 +191,19 @@ export default function InputPanel({
         </Button>
 
         <div className="flex flex-wrap gap-2 pt-1">
-          <Button variant="outline" onClick={onLoadStartup}>
-            Ejemplo: Startup
+          <Button
+            variant="outline"
+            onClick={() => applyProblem(exampleStartup)}
+          >
+            Startup
           </Button>
-          <Button variant="outline" onClick={onLoadProduction}>
+          <Button
+            variant="outline"
+            onClick={() => applyProblem(exampleProduction)}
+          >
             Producción
           </Button>
-          <Button variant="outline" onClick={onLoadMix}>
+          <Button variant="outline" onClick={() => applyProblem(exampleMix)}>
             Mezcla
           </Button>
         </div>
