@@ -9,10 +9,11 @@ export const exampleStartup: LinearProgrammingProblem = {
 };
 
 export const exampleProduction: LinearProgrammingProblem = {
-  objectiveFunction: { c1: 400, c2: 300, optimizationType: "maximizar" },
+  objectiveFunction: { c1: 80, c2: 100, optimizationType: "maximizar" },
   constraints: [
-    { a1: 2, a2: 1, inequalityType: "≤", b: 100 },
-    { a1: 1, a2: 2, inequalityType: "≤", b: 80 },
+    { a1: 40, a2: 60, inequalityType: "≤", b: 800 },
+    { a1: 15, a2: 20, inequalityType: "≤", b: 300 },
+    { a1: 1, a2: 1, inequalityType: "≥", b: 10 },
   ],
 };
 
