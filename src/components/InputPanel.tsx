@@ -66,7 +66,7 @@ export default function InputPanel({
   };
 
   return (
-    <Card className="w-full lg:w-[420px] relative z-10">
+    <Card className="w-full relative z-10">
       <CardHeader>
         <CardTitle>Datos del Problema</CardTitle>
       </CardHeader>

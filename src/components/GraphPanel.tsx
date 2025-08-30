@@ -153,85 +153,14 @@ export default function GraphPanel({ solution }: Props) {
     return { data: traces, layout };
   }, [solution, solver]);
 
-  const resultText = useMemo(() => {
-    if (!solution) return 'Configure los datos y presione "RESOLVER PROBLEMA".';
-    const lines: string[] = [];
-    lines.push("=== RESULTADOS DEL PROBLEMA ===", "");
-    lines.push("PROBLEMA PLANTEADO:");
-    lines.push(
-      `• ${solution.problem.objectiveFunction.optimizationType.toUpperCase()} Z = ${
-        solution.problem.objectiveFunction.c1
-      }·X₁ + ${solution.problem.objectiveFunction.c2}·X₂`
-    );
-    lines.push("• Restricciones:");
-    solution.problem.constraints.forEach((c) => {
-      if (!isNonNegativity(c)) lines.push(`  - ${constraintLabel(c)}`);
-    });
-    lines.push("  - X₁ ≥ 0, X₂ ≥ 0", "");
-
-    lines.push("=== ANÁLISIS MATEMÁTICO ===");
-    lines.push(`Puntos de intersección: ${solution.intersectionPoints.length}`);
-    solution.intersectionPoints.slice(0, 10).forEach((p, i) => {
-      const feas = solution.feasibleVertices.some(
-        (v) => Math.abs(v.x1 - p.x1) < 1e-6 && Math.abs(v.x2 - p.x2) < 1e-6
-      );
-      lines.push(
-        `  ${i + 1}. (${p.x1.toFixed(3)}, ${p.x2.toFixed(3)}) ${
-          feas ? "✓" : "✗"
-        }`
-      );
-    });
-    if (solution.intersectionPoints.length > 10)
-      lines.push(
-        `  ... y ${solution.intersectionPoints.length - 10} puntos más`,
-        ""
-      );
-
-    lines.push("=== VÉRTICES DE LA REGIÓN FACTIBLE ===");
-    if (solution.vertexEvaluations.length) {
-      solution.vertexEvaluations.forEach((e, i) =>
-        lines.push(
-          `${i + 1}. (${e.point.x1.toFixed(3)}, ${e.point.x2.toFixed(
-            3
-          )}) → Z = ${e.objectiveValue.toFixed(3)} ✓`
-        )
-      );
-    } else {
-      lines.push("No se encontraron vértices factibles.");
-    }
-    lines.push("");
-
-    lines.push("=== SOLUCIÓN ÓPTIMA ===");
-    if (solution.optimalPoint && solution.optimalValue != null) {
-      lines.push(
-        `Punto óptimo: X₁* = ${solution.optimalPoint.x1.toFixed(
-          3
-        )}, X₂* = ${solution.optimalPoint.x2.toFixed(3)}`
-      );
-      lines.push(`Valor óptimo: Z* = ${solution.optimalValue.toFixed(3)}`);
-    } else {
-      lines.push("No se encontró solución factible.");
-    }
-
-    return lines.join("\n");
-  }, [solution]);
-
   return (
-    <div className="flex-1 flex flex-col gap-4 relative z-0">
-      <div className="w-full bg-white border border-gray-200 rounded shadow-sm p-2">
-        <Plot
-          data={data}
-          layout={layout as any}
-          style={{ width: "100%" }}
-          config={{ displayModeBar: true }}
-        />
-      </div>
-      <div className="border border-gray-200 rounded p-4 bg-white shadow-sm text-gray-900">
-        <div className="font-semibold mb-2 text-gray-900">
-          Resultados Detallados
-        </div>
-        <pre className="whitespace-pre-wrap text-sm">{resultText}</pre>
-      </div>
+    <div className="w-full bg-white border border-gray-200 rounded shadow-sm p-2">
+      <Plot
+        data={data}
+        layout={layout as any}
+        style={{ width: "100%" }}
+        config={{ displayModeBar: true }}
+      />
     </div>
   );
 }
