@@ -60,6 +60,11 @@ export default function InputPanel({
   const handleSolve = () => {
     try {
       onSolve(toProblem());
+      // Desplazar suavemente hacia el gráfico
+      setTimeout(() => {
+        const el = document.getElementById("section-graph");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }, 50);
     } catch (e: any) {
       alert(e.message ?? "Error en los datos");
     }
