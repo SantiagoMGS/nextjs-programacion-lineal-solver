@@ -14,18 +14,18 @@ export default function ScrollNav() {
 
   useEffect(() => {
     const handler = () => {
-      let current = active;
+      let current = items[0].id;
       items.forEach((it) => {
         const el = document.getElementById(it.id);
         if (!el) return;
         const rect = el.getBoundingClientRect();
         if (rect.top <= 120 && rect.bottom >= 120) current = it.id;
       });
-      setActive(current);
+      setActive((prev) => (prev !== current ? current : prev));
     };
-    window.addEventListener("scroll", handler, { passive: true } as any);
+    window.addEventListener("scroll", handler, { passive: true });
     handler();
-    return () => window.removeEventListener("scroll", handler as any);
+    return () => window.removeEventListener("scroll", handler);
   }, []);
 
   const scrollTo = (id: string) => {
